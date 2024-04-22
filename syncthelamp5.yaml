@@ -8,7 +8,7 @@ blueprint:
       selector:
         entity:
           multiple: true
-mode: queued
+mode: restart
 max_exceeded: silent
 variables:
     linked_entities: !input 'linked_entities'
