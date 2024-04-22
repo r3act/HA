@@ -66,11 +66,11 @@ action:
                   {{ state_attr(trigger.to_state.entity_id, "color_temp") }}
                 {% endif %}
             target:
-              entity_id: {{ entity_2 }}, {{ entity_3 }}, {{ entity_4 }}, {{ entity_5 }}
+              entity_id: {{ entity_2 }}
       - conditions:
           - condition: template
             value_template: '{{ is_state(trigger.to_state.entity_id, "off") }}'
         sequence:
           - service: light.turn_off
             target:
-              entity_id: {{ entity_2 }}, {{ entity_3 }}, {{ entity_4 }}, {{ entity_5 }}
+              entity_id: {{ entity_2 }}
