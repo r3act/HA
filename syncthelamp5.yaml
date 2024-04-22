@@ -3,51 +3,24 @@ blueprint:
   description: Synchronize the on/off state, brightness, and color temperature of 5 entities
   domain: automation
   input:
-    entity_1:
-      name: First entity
+    linked_entities:
+      name: Entities to link
       selector:
         entity:
-          multiple: false
-    entity_2:
-      name: Second entity
-      selector:
-        entity:
-          multiple: false
-    entity_3:
-      name: Third entity
-      selector:
-        entity:
-          multiple: false
-    entity_4:
-      name: Fourth entity
-      selector:
-        entity:
-          multiple: false
-    entity_5:
-      name: Fifth entity
-      selector:
-        entity:
-          multiple: false
-  #source_url: https://gist.github.com/fireboy1919/997c80db37de30da76f67c5daeaba27b
-mode: restart
+          multiple: true
+mode: queued
 max_exceeded: silent
 variables:
-  entity_1: !input entity_1
-  entity_2: !input entity_2
-  entity_3: !input entity_3
-  entity_4: !input entity_4
-  entity_5: !input entity_5
+    linked_entities: !input 'linked_entities'
+    
 trigger:
   - platform: state
-    entity_id: 
-      - !input entity_1
+    entity_id: !input 'linked_entities'
   - platform: state
-    entity_id: 
-      - !input entity_1
+    entity_id: !input 'linked_entities'
     attribute: brightness
   - platform: state
-    entity_id: 
-      - !input entity_1
+    entity_id: !input 'linked_entities'
     attribute: color_temp
 condition: []
 action:
@@ -66,11 +39,11 @@ action:
                   {{ state_attr(trigger.to_state.entity_id, "color_temp") }}
                 {% endif %}
             target:
-              entity_id: {{ entity_2 }}
+              entity_id: '{{ expand(linked_entities) | selectattr("entity_id", "!=", trigger.entity_id) | map(attribute="entity_id") | list }}'
       - conditions:
           - condition: template
             value_template: '{{ is_state(trigger.to_state.entity_id, "off") }}'
         sequence:
           - service: light.turn_off
             target:
-              entity_id: {{ entity_2 }}
+              entity_id: '{{ expand(linked_entities) | selectattr("entity_id", "!=", trigger.entity_id) | map(attribute="entity_id") | list }}'
