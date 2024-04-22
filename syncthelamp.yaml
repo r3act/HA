@@ -1,6 +1,6 @@
 blueprint:
   name: Synchronize br and temp
-  description: Synchronize the on/off state, brightness, and color temperature of 3 entities
+  description: Synchronize the on/off state, brightness, and color temperature of 5 entities
   domain: automation
   input:
     entity_1:
@@ -18,6 +18,16 @@ blueprint:
       selector:
         entity:
           multiple: false
+    entity_4:
+      name: Fourth entity
+      selector:
+        entity:
+          multiple: false
+    entity_5:
+      name: Fifth entity
+      selector:
+        entity:
+          multiple: false
   #source_url: https://gist.github.com/fireboy1919/997c80db37de30da76f67c5daeaba27b
 mode: restart
 max_exceeded: silent
@@ -25,23 +35,31 @@ variables:
   entity_1: !input entity_1
   entity_2: !input entity_2
   entity_3: !input entity_3
+  entity_4: !input entity_4
+  entity_5: !input entity_5
 trigger:
   - platform: state
     entity_id: 
       - !input entity_1
       - !input entity_2
       - !input entity_3
+      - !input entity_4
+      - !input entity_5
   - platform: state
     entity_id: 
       - !input entity_1
       - !input entity_2
       - !input entity_3
+      - !input entity_4
+      - !input entity_5
     attribute: brightness
   - platform: state
     entity_id: 
       - !input entity_1
       - !input entity_2
       - !input entity_3
+      - !input entity_4
+      - !input entity_5
     attribute: color_temp
 condition: []
 action:
@@ -63,6 +81,8 @@ action:
               entity_id: >
                 {% if trigger.from_state.entity_id == entity_1 %} {{ entity_2 }}
                 {% elif trigger.from_state.entity_id == entity_2 %} {{ entity_3 }}
+                {% elif trigger.from_state.entity_id == entity_3 %} {{ entity_4 }}
+                {% elif trigger.from_state.entity_id == entity_4 %} {{ entity_5 }}
                 {% else %} {{ entity_1 }} {% endif %}
       - conditions:
           - condition: template
@@ -73,4 +93,6 @@ action:
               entity_id: >
                 {% if trigger.from_state.entity_id == entity_1 %} {{ entity_2 }}
                 {% elif trigger.from_state.entity_id == entity_2 %} {{ entity_3 }}
+                {% elif trigger.from_state.entity_id == entity_3 %} {{ entity_4 }}
+                {% elif trigger.from_state.entity_id == entity_4 %} {{ entity_5 }}
                 {% else %} {{ entity_1 }} {% endif %}
