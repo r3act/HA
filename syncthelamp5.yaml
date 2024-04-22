@@ -41,25 +41,13 @@ trigger:
   - platform: state
     entity_id: 
       - !input entity_1
-      - !input entity_2
-      - !input entity_3
-      - !input entity_4
-      - !input entity_5
   - platform: state
     entity_id: 
       - !input entity_1
-      - !input entity_2
-      - !input entity_3
-      - !input entity_4
-      - !input entity_5
     attribute: brightness
   - platform: state
     entity_id: 
       - !input entity_1
-      - !input entity_2
-      - !input entity_3
-      - !input entity_4
-      - !input entity_5
     attribute: color_temp
 condition: []
 action:
@@ -78,15 +66,19 @@ action:
                   {{ state_attr(trigger.to_state.entity_id, "color_temp") }}
                 {% endif %}
             target:
-              entity_id: >
-                {% if trigger.from_state.entity_id == entity_1 %} {{ entity_2 }} {{ entity_3 }} {{ entity_4 }} {{ entity_5 }}
-                {% else %} {{ entity_1 }} {% endif %}
+              entity_id: 
+                - {{ entity_2 }} 
+                - {{ entity_3 }} 
+                - {{ entity_4 }} 
+                - {{ entity_5 }}
       - conditions:
           - condition: template
             value_template: '{{ is_state(trigger.to_state.entity_id, "off") }}'
         sequence:
           - service: light.turn_off
             target:
-              entity_id: >
-                {% if trigger.from_state.entity_id == entity_1 %} {{ entity_2 }} {{ entity_3 }} {{ entity_4 }} {{ entity_5 }}
-                {% else %} {{ entity_1 }} {% endif %}
+              entity_id:
+                - {{ entity_2 }} 
+                - {{ entity_3 }} 
+                - {{ entity_4 }} 
+                - {{ entity_5 }}
