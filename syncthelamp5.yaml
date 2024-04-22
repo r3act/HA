@@ -79,10 +79,7 @@ action:
                 {% endif %}
             target:
               entity_id: >
-                {% if trigger.from_state.entity_id == entity_1 %} {{ entity_2 }}
-                {% elif trigger.from_state.entity_id == entity_2 %} {{ entity_3 }}
-                {% elif trigger.from_state.entity_id == entity_3 %} {{ entity_4 }}
-                {% elif trigger.from_state.entity_id == entity_4 %} {{ entity_5 }}
+                {% if trigger.from_state.entity_id == entity_1 %} {{ entity_2 }} {{ entity_3 }} {{ entity_4 }} {{ entity_5 }}
                 {% else %} {{ entity_1 }} {% endif %}
       - conditions:
           - condition: template
@@ -91,8 +88,5 @@ action:
           - service: light.turn_off
             target:
               entity_id: >
-                {% if trigger.from_state.entity_id == entity_1 %} {{ entity_2 }}
-                {% elif trigger.from_state.entity_id == entity_2 %} {{ entity_3 }}
-                {% elif trigger.from_state.entity_id == entity_3 %} {{ entity_4 }}
-                {% elif trigger.from_state.entity_id == entity_4 %} {{ entity_5 }}
+                {% if trigger.from_state.entity_id == entity_1 %} {{ entity_2 }} {{ entity_3 }} {{ entity_4 }} {{ entity_5 }}
                 {% else %} {{ entity_1 }} {% endif %}
